@@ -42,3 +42,24 @@ class VmCountOfServer(BaseMatcher):
 
 def has_a_vm_count_of(expected_vm_count):
   return VmCountOfServer(expected_vm_count)
+
+class VmIsLoadedInServer(BaseMatcher):
+  def __init__(self, expected_server):
+    self.expected_server = expected_server
+
+  def _matches(self, item):
+    if not hasattr(item, 'size'):
+      return False
+    return item in self.expected_server.vms
+
+  def describe_to(self, description):
+    description.append_text('a vm loaded in server with id %s' % self.expected_server.id)
+
+  def describe_mismatch(self, item, mismatch_description):
+    if not hasattr(item, 'size'):
+      mismatch_description.append_text('not a vm')
+    else:
+      mismatch_description.append_text('a vm not loaded in the server with id %s' % self.expected_server.id)
+
+def is_loaded_in(server):
+  return VmIsLoadedInServer(server)

@@ -25,7 +25,7 @@ class ServerLoadBalancerTestCase(unittest.TestCase):
 
     assert_that(server, has_current_load_percentage_of(100))
     assert_that(server, has_a_vm_count_of(1))
-    assert_that(vm, is_in(server.vms))
+    assert_that(vm, is_loaded_in(server))
 
   def test_serverThreeSlotsCapacity_withTwoSlotVm_serverIs67PercentLoaded(self):
     server = Server(id="server_id", slot_capacity=3)
@@ -35,7 +35,7 @@ class ServerLoadBalancerTestCase(unittest.TestCase):
 
     assert_that(server, has_current_load_percentage_of(67))
     assert_that(server, has_a_vm_count_of(1))
-    assert_that(vm, is_in(server.vms))
+    assert_that(vm, is_loaded_in(server))
 
   def test_serverTenSlotsCapacity_withOneSlotVm_serverIsTenPercentLoaded(self):
     server = Server(id="server_id", slot_capacity=10)
@@ -45,7 +45,7 @@ class ServerLoadBalancerTestCase(unittest.TestCase):
 
     assert_that(server, has_current_load_percentage_of(10))
     assert_that(server, has_a_vm_count_of(1))
-    assert_that(vm, is_in(server.vms))
+    assert_that(vm, is_loaded_in(server))
 
   def test_serverTenSlotsCapacity_withTwoOneSlotVms_serverIsTwentyPercentLoaded(self):
     server = Server(id="server_id", slot_capacity=10)
@@ -56,8 +56,8 @@ class ServerLoadBalancerTestCase(unittest.TestCase):
 
     assert_that(server, has_current_load_percentage_of(20))
     assert_that(server, has_a_vm_count_of(2))
-    assert_that(vm1, is_in(server.vms))
-    assert_that(vm2, is_in(server.vms))
+    assert_that(vm1, is_loaded_in(server))
+    assert_that(vm2, is_loaded_in(server))
 
 if __name__ == '__main__':
   unittest.main()
