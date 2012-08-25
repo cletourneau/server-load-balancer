@@ -7,7 +7,7 @@ def a_server(item):
   return isinstance(item, Server)
 
 def a_vm(item):
-  return hasattr(item, 'id') and hasattr(item, 'size')
+  return isinstance(item, VirtualMachine)
 
 class CurrentLoadPercentageOfServer(BaseMatcher):
   def __init__(self, expected_load_percentage):
