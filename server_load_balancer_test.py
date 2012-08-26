@@ -27,7 +27,7 @@ class ServerLoadBalancerTestCase(unittest.TestCase):
     assert_that(server, has_a_vm_count_of(1))
     assert_that(vm, is_loaded_in(server))
 
-  def test_serverThreeSlotsCapacity_withTwoSlotVm_serverIs67PercentLoaded(self):
+  def test_serverCurrentLoadPercentage_isRoundedUp(self):
     server = Server(id="server1", slot_capacity=3)
     vm = VirtualMachine(id="vm1", size=2)
 
