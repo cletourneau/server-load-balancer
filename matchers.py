@@ -9,6 +9,9 @@ def a_server(item):
 def a_vm(item):
   return isinstance(item, VirtualMachine)
 
+def a_list(item):
+  return isinstance(item, (tuple, list))
+
 class CurrentLoadPercentageOfServer(BaseMatcher):
   def __init__(self, expected_load_percentage):
     self.expected_load_percentage = expected_load_percentage
@@ -72,3 +75,57 @@ class VmIsLoadedInServer(BaseMatcher):
 
 def is_loaded_in(server):
   return VmIsLoadedInServer(server)
+
+class ServerListContains(BaseMatcher):
+  def __init__(self, expected_id, expected_slot_capacity):
+    self.expected_id = expected_id
+    self.expected_slot_capacity = expected_slot_capacity
+
+  def _matches(self, item):
+    if not a_list(item):
+      return False
+
+    for server in item:
+      if server.id == self.expected_id and server.slot_capacity == self.expected_slot_capacity:
+        return True
+
+    return False
+
+  def describe_to(self, description):
+    description.append_text('a server list containing a server with id %s and slot_capacity of %d' % (self.expected_id, self.expected_slot_capacity))
+
+  def describe_mismatch(self, item, mismatch_description):
+    if not a_list(item):
+      mismatch_description.append_text('not a list')
+    else:
+      mismatch_description.append_text('a server list not containing a server with id %s and slot_capacity of %d' % (self.expected_id, self.expected_slot_capacity))
+
+def contains_a_server_with(id, slot_capacity):
+  return ServerListContains(id, slot_capacity)
+
+class VmListContains(BaseMatcher):
+  def __init__(self, expected_id, expected_size):
+    self.expected_id = expected_id
+    self.expected_size = expected_size
+
+  def _matches(self, item):
+    if not a_list(item):
+      return False
+
+    for vm in item:
+      if vm.id == self.expected_id and vm.size == self.expected_size:
+        return True
+
+    return False
+
+  def describe_to(self, description):
+    description.append_text('a vm list containing a vm with id %s and size of %d' % (self.expected_id, self.expected_size))
+
+  def describe_mismatch(self, item, mismatch_description):
+    if not a_list(item):
+      mismatch_description.append_text('not a list')
+    else:
+      mismatch_description.append_text('a vm list not containing a vm with id %s and size of %d' % (self.expected_id, self.expected_size))
+
+def contains_a_vm_with(id, size):
+  return VmListContains(id, size)
