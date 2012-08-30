@@ -21,7 +21,7 @@ if __name__ == '__main__':
   print 'Parsing JSON entry'
   parser = Parser()
   (servers, vms) = parser.from_json(json_input)
-  print 'Balancing %d virtual machines on %d servers' % (len(vms), len(servers))
+  print 'Balancing {v_count} virtual machines on {s_count} servers'.format(v_count=len(vms), s_count=len(servers))
 
   balancer = ServerLoadBalancer()
   balancer.balance(servers, vms)

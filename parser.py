@@ -17,12 +17,23 @@ def create_vm_from(item):
   return VirtualMachine(id=item[ID_KEY], size=item[SLOT_KEY])
 
 def create_vm_json_for(vm):
-  return '{"%s":"%s","%s":%d}' % (ID_KEY, vm.id, SLOT_KEY, vm.size)
+  return '{{"{id_key}":"{id}","{slot_key}":{size}}}'.format(
+    id_key=ID_KEY,
+    id=vm.id,
+    slot_key=SLOT_KEY,
+    size=vm.size)
 
 def create_server_json_for(server):
   json_vms = [create_vm_json_for(vm) for vm in server.vms]
-  return '{"%s":"%s","%s":%d,"%s":%s,"%s":[%s]}' %\
-         (ID_KEY, server.id, SLOT_KEY, server.slot_capacity, USAGE_PERCENTAGE_KEY, server.current_load_percentage, VM_KEY, string.join(json_vms, ","))
+  return '{{"{id_key}":"{id}","{slot_key}":{slot_capacity},"{usage_percentage_key}":{current_load_percentage},"{vm_key}":[{vms}]}}'.format(
+    id_key=ID_KEY,
+    id=server.id,
+    slot_key=SLOT_KEY,
+    slot_capacity=server.slot_capacity,
+    usage_percentage_key=USAGE_PERCENTAGE_KEY,
+    current_load_percentage=server.current_load_percentage,
+    vm_key=VM_KEY,
+    vms=string.join(json_vms, ","))
 
 class Parser(object):
   def __extract_json_object_from(self, json_string):
@@ -45,5 +56,7 @@ class Parser(object):
   def to_json(self, servers):
     json_servers = [create_server_json_for(s) for s in servers]
 
-    json = '{"%s":[%s]}' % (SERVER_KEY, string.join(json_servers, ","))
+    json = '{{"{server_key}":[{servers}]}}'.format(
+      server_key=SERVER_KEY,
+      servers=string.join(json_servers, ","))
     return json
