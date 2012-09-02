@@ -3,7 +3,8 @@ import unittest
 from hamcrest import *
 
 from parser import *
-from matchers import *
+from matchers.server_list_contains import *
+from matchers.vm_list_contains import *
 
 class ParserTestCase(unittest.TestCase):
   def setUp(self):

@@ -1,9 +1,11 @@
 import unittest
 
 from hamcrest import *
-from matchers import *
 
 from server_load_balancer import *
+from matchers.current_load_percentage_of_server import *
+from matchers.vm_count_of_server import *
+from matchers.vm_is_loaded_in_server import *
 
 class ServerLoadBalancerTestCase(unittest.TestCase):
   def setUp(self):
